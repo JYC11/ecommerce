@@ -10,3 +10,4 @@ Some stuff I have in mind for now:
 * adding CI/CD
 * redoing the architecture of the backend(doing it as I write the backend)
 * rewriting the frontend in typescript
+* Docker and Docker Compose
