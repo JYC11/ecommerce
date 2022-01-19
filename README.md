@@ -9,5 +9,5 @@ Some stuff I have in mind for now:
 * consistent formatting with black
 * adding CI/CD
 * redoing the architecture of the backend(doing it as I write the backend)
-* rewriting the frontend in typescript
+* rewriting the frontend in typescript(this is low on priority)
 * Docker and Docker Compose
