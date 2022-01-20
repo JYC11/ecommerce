@@ -11,6 +11,7 @@ import {
 } from "react-bootstrap";
 import Rating from "../components/Rating";
 import { serverUrl } from "../utils/serverUrl";
+import { addToCart } from "../actions/cartActions";
 import { listProductDetails } from "../actions/productActions";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
@@ -28,7 +29,8 @@ const ProductScreen = ({ match, history }) => {
   }, [dispatch, match]);
 
   const addToCartHandler = () => {
-    history.push(`/cart/${match.params.id}?qty=${qty}`);
+    // history.push(`/cart/${match.params.id}?qty=${qty}`);
+    dispatch(addToCart(match.params.id,qty));
   };
 
   return (
