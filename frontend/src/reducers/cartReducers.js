@@ -8,9 +8,10 @@ export const cartReducer = (state = { cartItems: [] }, action) => {
       );
       if (existingItemIndex >= 0) {
         const existingCartItem = state.cartItems[existingItemIndex];
+        const newQty = Number(existingCartItem.qty) + Number(item.qty);
         let updatedItem = {
           ...existingCartItem,
-          qty: Number(existingCartItem.qty) + Number(item.qty),
+          qty: newQty > Number(item.countInStock) ? Number(existingCartItem.qty) : newQty,
         };
         let updatedCartItems = [...state.cartItems];
         updatedCartItems[existingItemIndex] = updatedItem;

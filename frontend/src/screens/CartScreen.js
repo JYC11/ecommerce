@@ -15,22 +15,22 @@ import { addToCart, removeFromCart } from "../actions/cartActions";
 import { serverUrl } from "../utils/serverUrl";
 
 const CartScreen = ({ match, location, history }) => {
-//   const productId = match.params.id;
-//   const qty = location.search ? Number(location.search.split("=")[1]) : 1;
+  //   const productId = match.params.id;
+  //   const qty = location.search ? Number(location.search.split("=")[1]) : 1;
 
   const dispatch = useDispatch();
 
   const cart = useSelector((state) => state.cart);
   const { cartItems } = cart;
 
-//   useEffect(() => {
-//     if (productId) {
-//       dispatch(addToCart(productId, qty));
-//     }
-//   }, [dispatch, productId, qty]);
+  //   useEffect(() => {
+  //     if (productId) {
+  //       dispatch(addToCart(productId, qty));
+  //     }
+  //   }, [dispatch, productId, qty]);
 
   const removeFromCartHandler = (id) => {
-      dispatch(removeFromCart(id))
+    dispatch(removeFromCart(id));
   };
 
   const checkoutHandler = () => {};
@@ -60,22 +60,20 @@ const CartScreen = ({ match, location, history }) => {
                     <Link to={`/product/${item.productId}`}>{item.name}</Link>
                   </Col>
                   <Col md={2}>${item.price}</Col>
-                  <Col md={3}>
+                  <Col xs={2}>
                     <Form.Control
-                      as="select"
-                      value={item.qty}
+                      size="sm"
+                      type="number"
+                      min="1"
+                      max={String(item.countInStock)}
+                      value={Number(item.qty)}
+                      className="text-center"
                       onChange={(e) =>
                         dispatch(
-                          addToCart(item.productId, Number(e.target.value))
+                          addToCart(item.productId, Number(e.target.value)-Number(item.qty))
                         )
                       }
-                    >
-                      {[...Array(item.countInStock).keys()].map((x) => (
-                        <option key={x + 1} value={x + 1}>
-                          {x + 1}
-                        </option>
-                      ))}
-                    </Form.Control>
+                    ></Form.Control>
                   </Col>
                   <Col md={1}>
                     <Button

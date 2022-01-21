@@ -94,39 +94,17 @@ const ProductScreen = ({ match, history }) => {
                 {product.countInStock > 0 && (
                   <ListGroup.Item>
                     <Row>
-                      <Col xs={3}>Qty:</Col>
+                      <Col>Qty:</Col>
                       <Col>
-                        <Button
-                          size="sm"
-                          onClick={() =>
-                            setQty(Number(qty) === 0 ? 0 : Number(qty) - 1)
-                          }
-                        >
-                          -
-                        </Button>
-                      </Col>
-                      <Col xs={4}>
                         <Form.Control
                           size="sm"
-                          type="text"
+                          type="number"
+                          min="1"
+                          max={String(product.countInStock)}
                           value={Number(qty)}
                           className="text-center"
                           onChange={(e) => setQty(e.target.value)}
                         ></Form.Control>
-                      </Col>
-                      <Col>
-                        <Button
-                          size="sm"
-                          onClick={() =>
-                            setQty(
-                              Number(qty) < product.countInStock
-                                ? Number(qty) + 1
-                                : Number(qty)
-                            )
-                          }
-                        >
-                          +
-                        </Button>
                       </Col>
                     </Row>
                   </ListGroup.Item>
