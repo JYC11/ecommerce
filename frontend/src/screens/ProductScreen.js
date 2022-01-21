@@ -8,6 +8,7 @@ import {
   Button,
   Card,
   Form,
+  Modal,
 } from "react-bootstrap";
 import Rating from "../components/Rating";
 import { serverUrl } from "../utils/serverUrl";
@@ -19,6 +20,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 const ProductScreen = ({ match, history }) => {
   const [qty, setQty] = useState(1);
+  const [show, setShow] = useState(false);
 
   const dispatch = useDispatch();
   const productDetails = useSelector((state) => state.productDetails);
@@ -28,16 +30,29 @@ const ProductScreen = ({ match, history }) => {
     dispatch(listProductDetails(match.params.id));
   }, [dispatch, match]);
 
-  const addToCartHandler = () => {
-    // history.push(`/cart/${match.params.id}?qty=${qty}`);
-    dispatch(addToCart(match.params.id, qty));
-  };
+  const addToCartHandler = () => dispatch(addToCart(match.params.id, qty));
+  const handleShow = () => setShow(true);
+  const handleClose = () => setShow(false);
+  const addToCartAndShowModal = () => {addToCartHandler();handleShow();}
+  const goToCart = () => history.push("/cart");
 
   return (
     <div>
       <Link to="/" className="btn btn-light my-3">
         Go Back
       </Link>
+      <Modal show={show}>
+        <Modal.Header>
+          <Modal.Title>Added To Cart!</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {product.name} x {qty} added to cart
+        </Modal.Body>
+        <Modal.Footer>
+          <Button onClick={handleClose}>Close</Button>
+          <Button onClick={goToCart}>Go To Cart</Button>
+        </Modal.Footer>
+      </Modal>
       {loading ? (
         <Loader />
       ) : error ? (
@@ -112,7 +127,7 @@ const ProductScreen = ({ match, history }) => {
 
                 <ListGroup.Item>
                   <Button
-                    onClick={addToCartHandler}
+                    onClick={addToCartAndShowModal}
                     className="btn-block"
                     disabled={product.countInStock === 0}
                     type="button"
