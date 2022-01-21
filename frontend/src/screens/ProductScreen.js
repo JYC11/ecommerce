@@ -30,7 +30,7 @@ const ProductScreen = ({ match, history }) => {
 
   const addToCartHandler = () => {
     // history.push(`/cart/${match.params.id}?qty=${qty}`);
-    dispatch(addToCart(match.params.id,qty));
+    dispatch(addToCart(match.params.id, qty));
   };
 
   return (
@@ -94,19 +94,39 @@ const ProductScreen = ({ match, history }) => {
                 {product.countInStock > 0 && (
                   <ListGroup.Item>
                     <Row>
-                      <Col>Qty</Col>
-                      <Col xs="auto" className="my-1">
-                        <Form.Control
-                          as="select"
-                          value={qty}
-                          onChange={(e) => setQty(e.target.value)}
+                      <Col xs={3}>Qty:</Col>
+                      <Col>
+                        <Button
+                          size="sm"
+                          onClick={() =>
+                            setQty(Number(qty) === 0 ? 0 : Number(qty) - 1)
+                          }
                         >
-                          {[...Array(product.countInStock).keys()].map((x) => (
-                            <option key={x + 1} value={x + 1}>
-                              {x + 1}
-                            </option>
-                          ))}
-                        </Form.Control>
+                          -
+                        </Button>
+                      </Col>
+                      <Col xs={4}>
+                        <Form.Control
+                          size="sm"
+                          type="text"
+                          value={Number(qty)}
+                          className="text-center"
+                          onChange={(e) => setQty(e.target.value)}
+                        ></Form.Control>
+                      </Col>
+                      <Col>
+                        <Button
+                          size="sm"
+                          onClick={() =>
+                            setQty(
+                              Number(qty) < product.countInStock
+                                ? Number(qty) + 1
+                                : Number(qty)
+                            )
+                          }
+                        >
+                          +
+                        </Button>
                       </Col>
                     </Row>
                   </ListGroup.Item>
