@@ -11,6 +11,7 @@ pillow = "*"
 black = "*"
 flake8 = "*"
 python-decouple = "*"
+djangorestframework-simplejwt = "*"
 
 [dev-packages]
 
