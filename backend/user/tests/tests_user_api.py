@@ -80,8 +80,8 @@ class PublicUserApiTests(TestCase):
         )
 
 
-class PrivateUserApiTests(TestCase):
-    """test the privately available user api"""
+class PrivateAdminUserApiTests(TestCase):
+    """test the privately available user api for admin users"""
 
     def setUp(self):
         self.client = APIClient()
@@ -103,7 +103,7 @@ class PrivateUserApiTests(TestCase):
         self.admin = create_superuser(self.payload_admin)
         self.client.force_authenticate(user=self.admin)
 
-    def test_get_user_profile_authorized(self):
+    def test_get_admin_profile_authorized(self):
         """test get admin profile with no authorization"""
         res = self.client.get(USER_PROFILE_URL)
         self.assertEqual(res.status_code, status.HTTP_200_OK)
@@ -126,3 +126,47 @@ class PrivateUserApiTests(TestCase):
         res = self.client.get(USER_LIST_URL)
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(len(res.data), 3)
+
+
+class PrivateUserApiTests(TestCase):
+    """test the privately available user api for normal users"""
+
+    def setUp(self):
+        self.client = APIClient()
+        self.payload1 = {
+            "name": "Jim Bob",
+            "email": "jim@example.com",
+            "password": "coolPassword123",
+        }
+        self.payload2 = {
+            "name": "Mary",
+            "email": "mary@example.com",
+            "password": "coolPassword123",
+        }
+        self.user = create_user(self.payload1)
+        self.client.force_authenticate(user=self.user)
+
+    def test_get_user_profile_authorized(self):
+        """test get user profile with no authorization"""
+        res = self.client.get(USER_PROFILE_URL)
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertNotIn("password", res.data)
+        self.assertEqual(
+            res.data,
+            {
+                "_id": 1,
+                "username": "jim@example.com",
+                "email": "jim@example.com",
+                "name": "Jim Bob",
+                "isAdmin": False,
+            },
+        )
+
+    def test_get_users_not_staff(self):
+        """test get user list when not staff"""
+        create_user(self.payload2)
+        res = self.client.get(USER_LIST_URL)
+        self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(
+            res.data["detail"], "You do not have permission to perform this action."
+        )
