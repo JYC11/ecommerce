@@ -36,12 +36,14 @@ def getUserProfile(request):
     serializer = UserSerializer(user, many=False)
     return Response(serializer.data)
 
+
 @api_view(["GET"])
 @permission_classes([IsAdminUser])
 def getUsers(request):
     users = User.objects.all()
-    serializer = UserSerializer(users,many=True)
+    serializer = UserSerializer(users, many=True)
     return Response(serializer.data)
+
 
 @api_view(["POST"])
 def registerUser(request):
@@ -51,10 +53,10 @@ def registerUser(request):
             first_name=data["name"],
             username=data["email"],
             email=data["email"],
-            password = make_password(data["password"])
+            password=make_password(data["password"]),
         )
-        serializer = UserSerializerWithToken(user,many=False)
+        serializer = UserSerializerWithToken(user, many=False)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     except:
-        message = {"detail":"User with this email exists"}
+        message = {"detail": "User with this email exists"}
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
