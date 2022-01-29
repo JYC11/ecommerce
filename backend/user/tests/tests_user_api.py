@@ -104,7 +104,7 @@ class PrivateAdminUserApiTests(TestCase):
         self.client.force_authenticate(user=self.admin)
 
     def test_get_admin_profile_authorized(self):
-        """test get admin profile with no authorization"""
+        """test get admin profile with authorization"""
         res = self.client.get(USER_PROFILE_URL)
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertNotIn("password", res.data)
@@ -147,7 +147,7 @@ class PrivateUserApiTests(TestCase):
         self.client.force_authenticate(user=self.user)
 
     def test_get_user_profile_authorized(self):
-        """test get user profile with no authorization"""
+        """test get user profile with authorization"""
         res = self.client.get(USER_PROFILE_URL)
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertNotIn("password", res.data)
