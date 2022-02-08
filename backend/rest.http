@@ -1,6 +1,6 @@
 @baseUrl=http://localhost:8000
 @adminJWT=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjQ1OTYyMzA0LCJpYXQiOjE2NDMzNzAzMDQsImp0aSI6IjhlODFlYmM5NDA1MzQ2MjViMjQ1NzI0OTMzYTE1ZGMyIiwidXNlcl9pZCI6MX0.mxqhFRuzEQ1Tv0Wl5E5EZzC3jS_xIiGv_fn9noJeAkU
-@johnJWT=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjQ1OTY2MjU5LCJpYXQiOjE2NDMzNzQyNTksImp0aSI6IjYxMjFlN2UwMmFkNzQ5Njg5NzE3Nzc5ZjBmZmQ4M2Q0IiwidXNlcl9pZCI6Mn0.J9e_onl08d6miND9oXsSq38_XYvStYJPsXHsgcPUJ60
+@johnJWT=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjQ2MzgzOTM2LCJpYXQiOjE2NDM3OTE5MzYsImp0aSI6IjQzOTIxMGEzNDJjMzQwNDBiYzE0N2EwNTBlZDQ5YTNlIiwidXNlcl9pZCI6Mn0.kVITdS3UOqV55hNtVjBQrDcCli3KACWEaXAun1tkG44
 
 ### @name getProducts
 GET {{baseUrl}}/api/products/
@@ -28,4 +28,15 @@ Content-Type: application/json
     "name":"john doe",
     "email":"john@email.com",
     "password":"coolPassword123"
+}
+
+### @name updateUser
+PUT {{baseUrl}}/api/users/profile/update/
+Content-Type: application/json
+Authorization: Bearer {{johnJWT}}
+
+{
+    "name":"john doe joestar",
+    "email":"john@email.com",
+    "password":""
 }

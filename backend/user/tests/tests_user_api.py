@@ -8,7 +8,7 @@ from rest_framework import status
 REGISTER_USER_URL = reverse("user:register")
 USER_LIST_URL = reverse("user:users")
 USER_PROFILE_URL = reverse("user:users-profile")
-
+USER_PROFILE_UPDATE_URL = reverse("user:users-profile-update")
 
 def create_user(params):
     return get_user_model().objects.create(
@@ -170,3 +170,16 @@ class PrivateUserApiTests(TestCase):
         self.assertEqual(
             res.data["detail"], "You do not have permission to perform this action."
         )
+
+    def test_update_user_profile(self):
+        """test update user profile when not staff"""
+        update_payload = {
+            "name":"john joestar",
+            "email":"john@email.com",
+            "password":""
+        }
+        self.client.put(USER_PROFILE_UPDATE_URL, update_payload)
+        updated_profile = self.client.get(USER_PROFILE_URL)
+        self.assertEqual(updated_profile.data["name"], update_payload["name"])
+        self.assertEqual(updated_profile.data["email"], update_payload["email"])
+        self.assertEqual(updated_profile.data["username"], update_payload["email"])
