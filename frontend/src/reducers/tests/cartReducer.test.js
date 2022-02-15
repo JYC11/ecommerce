@@ -1,6 +1,6 @@
 import { CART_ADD_ITEM, CART_REMOVE_ITEM } from "../../constants/cartConstants";
 import { cartReducer } from "../cartReducers";
-import products from "../../products";
+import products from "../../mockData/products";
 
 describe("cart reducer test", () => {
   const product = {

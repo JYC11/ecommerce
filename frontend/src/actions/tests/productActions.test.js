@@ -3,7 +3,7 @@ import thunk from "redux-thunk";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 import { listProducts, listProductDetails } from "../productActions";
-import products from "../../products";
+import products from "../../mockData/products";
 import {
   PRODUCT_LIST_REQUEST,
   PRODUCT_LIST_SUCCESS,

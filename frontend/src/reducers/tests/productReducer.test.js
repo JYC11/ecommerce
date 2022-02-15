@@ -7,7 +7,7 @@ import {
   PRODUCT_DETAILS_SUCCESS,
   PRODUCT_DETAILS_FAIL,
 } from "../../constants/productConstants";
-import products from "../../products";
+import products from "../../mockData/products";
 
 describe("product reducer test", () => {
   it("should return initial product list state", () => {
