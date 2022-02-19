@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -15,19 +15,10 @@ import { addToCart, removeFromCart } from "../actions/cartActions";
 import { serverUrl } from "../utils/serverUrl";
 
 const CartScreen = ({ match, location, history }) => {
-  //   const productId = match.params.id;
-  //   const qty = location.search ? Number(location.search.split("=")[1]) : 1;
-
   const dispatch = useDispatch();
 
   const cart = useSelector((state) => state.cart);
   const { cartItems } = cart;
-
-  //   useEffect(() => {
-  //     if (productId) {
-  //       dispatch(addToCart(productId, qty));
-  //     }
-  //   }, [dispatch, productId, qty]);
 
   const removeFromCartHandler = (id) => {
     dispatch(removeFromCart(id));
@@ -62,6 +53,7 @@ const CartScreen = ({ match, location, history }) => {
                   <Col md={2}>${item.price}</Col>
                   <Col xs={2}>
                     <Form.Control
+                      name="cart-qty"
                       size="sm"
                       type="number"
                       min="1"
@@ -70,7 +62,10 @@ const CartScreen = ({ match, location, history }) => {
                       className="text-center"
                       onChange={(e) =>
                         dispatch(
-                          addToCart(item.productId, Number(e.target.value)-Number(item.qty))
+                          addToCart(
+                            item.productId,
+                            Number(e.target.value) - Number(item.qty)
+                          )
                         )
                       }
                     ></Form.Control>
