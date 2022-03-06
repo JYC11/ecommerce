@@ -20,7 +20,7 @@ import {
   userRegisterReducer,
   userDetailsReducer,
   userUpdateProfileReducer,
-} from "../userReducer";
+} from "../userReducers";
 import userInfo from "../../mockData/user";
 
 describe("userUpdateProfileReducer test", () => {

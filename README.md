@@ -11,5 +11,23 @@ Some stuff I have in mind for now:
 - adding CI/CD
 - redoing the architecture of the backend(doing it as I write the backend)
 - rewriting the frontend in typescript(this is low on priority)
-- use postgres instead of sqlite3 db
 - Docker and Docker Compose
+
+As I was doing the project I found some problems in the frontend which I fixed and I got some ideas for new features after observing my own workplace's ecommerce webapp features.
+
+Bug fixes
+
+- Properly add to cart instead of overwriting cart state
+
+New features added(compared to original code):
+
+- modal pop-up when added to cart
+- Use number input instead of dropdown for quantity select
+
+Extra features I'm thinking of:
+
+- discount feature(admin and user)
+  - admin add discounts directly
+  - user uses discount codes if given
+- product mass upload, edit, download feature(admin)
+- upgrading to React Router 6

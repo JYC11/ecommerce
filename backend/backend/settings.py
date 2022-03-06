@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "core.apps.CoreConfig",
     "product.apps.ProductConfig",
     "user.apps.UserConfig",
+    "order.apps.OrderConfig",
     # 3rd party
     "rest_framework",
     "corsheaders",

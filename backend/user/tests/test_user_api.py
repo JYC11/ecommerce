@@ -10,6 +10,7 @@ USER_LIST_URL = reverse("user:users")
 USER_PROFILE_URL = reverse("user:users-profile")
 USER_PROFILE_UPDATE_URL = reverse("user:users-profile-update")
 
+
 def create_user(params):
     return get_user_model().objects.create(
         first_name=params["name"],
@@ -174,9 +175,9 @@ class PrivateUserApiTests(TestCase):
     def test_update_user_profile(self):
         """test update user profile when not staff"""
         update_payload = {
-            "name":"john joestar",
-            "email":"john@email.com",
-            "password":""
+            "name": "john joestar",
+            "email": "john@email.com",
+            "password": "",
         }
         self.client.put(USER_PROFILE_UPDATE_URL, update_payload)
         updated_profile = self.client.get(USER_PROFILE_URL)

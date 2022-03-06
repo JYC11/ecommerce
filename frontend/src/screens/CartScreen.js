@@ -24,7 +24,9 @@ const CartScreen = ({ match, location, history }) => {
     dispatch(removeFromCart(id));
   };
 
-  const checkoutHandler = () => {};
+  const checkoutHandler = () => {
+    history.push("/shipping");
+  };
 
   return (
     <Row>
