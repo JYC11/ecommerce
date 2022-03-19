@@ -27,6 +27,7 @@ import {
   USER_UPDATE_PROFILE_FAIL,
   USER_UPDATE_PROFILE_RESET,
 } from "../../constants/userConstants";
+import { MY_ORDERS_LIST_RESET } from "../../constants/orderConstants";
 
 const middleware = [thunk];
 const mockStore = configureMockStore(middleware);
@@ -211,6 +212,7 @@ describe("test user login and logout", () => {
       let expectedActions = [
         { type: USER_LOGOUT },
         { type: USER_DETAILS_RESET },
+        { type: MY_ORDERS_LIST_RESET },
       ];
       expect(store.getActions()).toEqual(expectedActions);
     });

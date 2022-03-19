@@ -1,7 +1,8 @@
 @baseUrl=http://localhost:8000
 @adminJWT=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjQ1OTYyMzA0LCJpYXQiOjE2NDMzNzAzMDQsImp0aSI6IjhlODFlYmM5NDA1MzQ2MjViMjQ1NzI0OTMzYTE1ZGMyIiwidXNlcl9pZCI6MX0.mxqhFRuzEQ1Tv0Wl5E5EZzC3jS_xIiGv_fn9noJeAkU
 @johnJWT=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjQ2MzgzOTM2LCJpYXQiOjE2NDM3OTE5MzYsImp0aSI6IjQzOTIxMGEzNDJjMzQwNDBiYzE0N2EwNTBlZDQ5YTNlIiwidXNlcl9pZCI6Mn0.kVITdS3UOqV55hNtVjBQrDcCli3KACWEaXAun1tkG44
-
+@johnJWT1=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjQ3MzUxNjMxLCJpYXQiOjE2NDQ3NTk2MzEsImp0aSI6IjFkN2NiMzNhNDQ1OTRlZGU5NjAyNjUwOWVjMjY2NGE1IiwidXNlcl9pZCI6Mn0.tvHNSiFu3M5_h4e2OJ1wOVfgZGeF7tcTpcmIqdYcL_g
+@johnJWT2=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjUwMTE4NDkzLCJpYXQiOjE2NDc1MjY0OTMsImp0aSI6Ijg5OGI1YjM2NGQ0NDRhNTc4MmY4YjFhZDQ3ZDliMWE5IiwidXNlcl9pZCI6Mn0.oYwEULSonNoSW-ID8ngqDB5Y0MgjvMRaWQSy2MPVZss
 ### @name getProducts
 GET {{baseUrl}}/api/products/
 
@@ -40,3 +41,14 @@ Authorization: Bearer {{johnJWT}}
     "email":"john@email.com",
     "password":""
 }
+
+### @name getOrder
+GET {{baseUrl}}/api/orders/9/
+Content-Type: application/json
+Authorization: Bearer {{johnJWT1}}
+
+
+### @name getMyOrders
+GET {{baseUrl}}/api/orders/myorders/
+Content-Type: application/json
+Authorization: Bearer {{johnJWT2}}

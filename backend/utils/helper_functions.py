@@ -12,7 +12,7 @@ def order_total_checker(orderItems):
         subtotal += float(qty) * float(price)
 
     subtotal = round(float(subtotal), 2)
-    tax = round(float(subtotal) * TAX_RATE)
+    tax = round(float(subtotal) * TAX_RATE, 2)
     shipping = 0 if subtotal > FREE_SHIPPING_LIMIT else BASE_SHIPPING_FEE
     total = subtotal + tax + shipping
     return [total, shipping, tax]

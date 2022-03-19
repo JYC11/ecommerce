@@ -9,7 +9,7 @@ Some stuff I have in mind for now:
 - adding tests for backend and frontend
 - consistent formatting with black
 - adding CI/CD
-- redoing the architecture of the backend(doing it as I write the backend)
+- redoing the file organization of the backend(doing it as I write the backend)
 - rewriting the frontend in typescript(this is low on priority)
 - Docker and Docker Compose
 
