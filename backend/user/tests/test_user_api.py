@@ -4,11 +4,15 @@ from django.contrib.auth.hashers import make_password
 from django.urls import reverse
 from rest_framework.test import APIClient
 from rest_framework import status
+from core.models import User
 
 REGISTER_USER_URL = reverse("user:register")
 USER_LIST_URL = reverse("user:users")
 USER_PROFILE_URL = reverse("user:users-profile")
 USER_PROFILE_UPDATE_URL = reverse("user:users-profile-update")
+ADMIN_GET_USER_BY_ID_URL = reverse("user:admin-get-by-id", args=[1])
+ADMIN_UPDATE_URL = reverse("user:admin-update", args=[1])
+ADMIN_DELETE_URL = reverse("user:admin-delete", args=[2])
 
 
 def create_user(params):
@@ -80,6 +84,33 @@ class PublicUserApiTests(TestCase):
             res.data["detail"], "Authentication credentials were not provided."
         )
 
+    def test_get_user_by_id_no_auth_no_admin(self):
+        """test get user profile with no authorization, not admin"""
+        create_user(self.payload1)
+        res = self.client.get(ADMIN_GET_USER_BY_ID_URL)
+        self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
+        self.assertEqual(
+            res.data["detail"], "Authentication credentials were not provided."
+        )
+
+    def test_update_user_no_auth_no_admin(self):
+        """test update user profile with no authorization, not admin"""
+        create_user(self.payload1)
+        res = self.client.put(ADMIN_UPDATE_URL)
+        self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
+        self.assertEqual(
+            res.data["detail"], "Authentication credentials were not provided."
+        )
+
+    def test_delete_user_no_auth_no_admin(self):
+        """test delete user profile with no authorization, not admin"""
+        create_user(self.payload1)
+        res = self.client.delete(ADMIN_DELETE_URL)
+        self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
+        self.assertEqual(
+            res.data["detail"], "Authentication credentials were not provided."
+        )
+
 
 class PrivateAdminUserApiTests(TestCase):
     """test the privately available user api for admin users"""
@@ -100,6 +131,12 @@ class PrivateAdminUserApiTests(TestCase):
             "name": "Mary",
             "email": "mary@example.com",
             "password": "coolPassword123",
+        }
+        self.update_payload = {
+            "name": "john joestar",
+            "email": "john@email.com",
+            "password": "",
+            "isAdmin": True,
         }
         self.admin = create_superuser(self.payload_admin)
         self.client.force_authenticate(user=self.admin)
@@ -128,6 +165,52 @@ class PrivateAdminUserApiTests(TestCase):
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(len(res.data), 3)
 
+    def test_get_user_by_id(self):
+        """test get user profile"""
+        res = self.client.get(ADMIN_GET_USER_BY_ID_URL)
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(
+            res.data,
+            {
+                "_id": 1,
+                "username": "admin@example.com",
+                "email": "admin@example.com",
+                "name": "admin",
+                "isAdmin": True,
+            },
+        )
+
+    def test_update_user(self):
+        """test update user profile"""
+        res = self.client.put(ADMIN_UPDATE_URL, self.update_payload)
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(
+            res.data,
+            {
+                "_id": 1,
+                "username": "john@email.com",
+                "email": "john@email.com",
+                "name": "john joestar",
+                "isAdmin": "True",
+            },
+        )
+
+    def test_delete_user(self):
+        """test delete user profile"""
+        create_user(self.payload2)
+        users_before = (self.client.get(USER_LIST_URL)).data
+
+        res = self.client.delete(ADMIN_DELETE_URL)
+        users_after = (self.client.get(USER_LIST_URL)).data
+
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(res.data, {"deleted_user_id": "2"})
+        self.assertLess(len(users_after), len(users_before))
+        self.assertEqual(len(users_after), 1)
+
+        deleted_user = User.objects.filter(id=2)
+        self.assertEquals(deleted_user.exists(), False)
+
 
 class PrivateUserApiTests(TestCase):
     """test the privately available user api for normal users"""
@@ -143,6 +226,12 @@ class PrivateUserApiTests(TestCase):
             "name": "Mary",
             "email": "mary@example.com",
             "password": "coolPassword123",
+        }
+        self.update_payload = {
+            "name": "john joestar",
+            "email": "john@email.com",
+            "password": "",
+            "isAdmin": True,
         }
         self.user = create_user(self.payload1)
         self.client.force_authenticate(user=self.user)
@@ -174,13 +263,32 @@ class PrivateUserApiTests(TestCase):
 
     def test_update_user_profile(self):
         """test update user profile when not staff"""
-        update_payload = {
-            "name": "john joestar",
-            "email": "john@email.com",
-            "password": "",
-        }
-        self.client.put(USER_PROFILE_UPDATE_URL, update_payload)
+        self.client.put(USER_PROFILE_UPDATE_URL, self.update_payload)
         updated_profile = self.client.get(USER_PROFILE_URL)
-        self.assertEqual(updated_profile.data["name"], update_payload["name"])
-        self.assertEqual(updated_profile.data["email"], update_payload["email"])
-        self.assertEqual(updated_profile.data["username"], update_payload["email"])
+        self.assertEqual(updated_profile.data["name"], self.update_payload["name"])
+        self.assertEqual(updated_profile.data["email"], self.update_payload["email"])
+        self.assertEqual(updated_profile.data["username"], self.update_payload["email"])
+
+    def test_get_user_by_id_no_admin(self):
+        """test get user profile not admin"""
+        res = self.client.get(ADMIN_GET_USER_BY_ID_URL)
+        self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(
+            res.data["detail"], "You do not have permission to perform this action."
+        )
+
+    def test_update_user_no_admin(self):
+        """test update user profile not admin"""
+        res = self.client.put(ADMIN_UPDATE_URL, self.update_payload)
+        self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(
+            res.data["detail"], "You do not have permission to perform this action."
+        )
+
+    def test_delete_user_no_admin(self):
+        """test delete user profile not admin"""
+        res = self.client.delete(ADMIN_DELETE_URL)
+        self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(
+            res.data["detail"], "You do not have permission to perform this action."
+        )

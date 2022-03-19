@@ -14,7 +14,7 @@ from utils.helper_functions import order_total_checker
 
 @api_view(["POST"])
 @permission_classes([IsAuthenticated])
-def addOrderItems(request):
+def add_order_items(request):
     user = request.user
     data = request.data
 
@@ -75,7 +75,7 @@ def addOrderItems(request):
 
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
-def getMyOrders(request):
+def get_my_orders(request):
     user = request.user
     orders = user.order_set.all()
     serializer = OrderSerializer(orders, many=True)
@@ -84,7 +84,7 @@ def getMyOrders(request):
 
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
-def getOrderById(request, pk):
+def get_order_by_id(request, pk):
     user = request.user
     order = Order.objects.get(_id=pk)
     try:
@@ -105,7 +105,7 @@ def getOrderById(request, pk):
 
 @api_view(["PATCH"])
 @permission_classes([IsAuthenticated])
-def updateOrderToPaid(request, pk):
+def update_order_to_paid(request, pk):
     order = Order.objects.get(_id=pk)
     order.isPaid = True
     order.paidAt = timezone.now()
@@ -115,7 +115,7 @@ def updateOrderToPaid(request, pk):
 
 @api_view(["PATCH"])
 @permission_classes([IsAuthenticated])
-def updateOrderToDelivered(request, pk):
+def update_order_to_delivered(request, pk):
     order = Order.objects.get(_id=pk)
     order.isDelivered = True
     order.deliveredAt = timezone.now()
