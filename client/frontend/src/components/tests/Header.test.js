@@ -7,6 +7,7 @@ import thunk from "redux-thunk";
 import Enzyme from "enzyme";
 import Adapter from "@wojtekmaj/enzyme-adapter-react-17";
 import userInfo from "../../mockData/user";
+import adminInfo from "../../mockData/admin";
 
 const mockStore = configureMockStore([thunk]);
 
@@ -52,5 +53,32 @@ describe("testing Header rendering with different states", () => {
     usrnameBtn.simulate("click");
     expect(wrapper.text().includes("Profile")).toBe(true);
     expect(wrapper.text().includes("Logout")).toBe(true);
+  });
+
+  it("should contain 'ProShop','Cart', 'Admin' and logged in user information when admin is logged in", () => {
+    const store = mockStore({
+      userLogin: {
+        userInfo: adminInfo,
+      },
+    });
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter>
+          <Header />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.text().includes("ProShop")).toBe(true);
+    expect(wrapper.text().includes("Cart")).toBe(true);
+    expect(wrapper.text().includes("Admin")).toBe(true);
+    expect(wrapper.text().includes(adminInfo.name)).toBe(true);
+    let usrnameBtn = wrapper.find("#username.dropdown-toggle.nav-link").at(0);
+    usrnameBtn.simulate("click");
+    expect(wrapper.text().includes("Profile")).toBe(true);
+    expect(wrapper.text().includes("Logout")).toBe(true);
+    let adminBtn = wrapper.find("#adminmenu.dropdown-toggle.nav-link").at(0);
+    adminBtn.simulate("click");
+    expect(wrapper.text().includes("Users")).toBe(true);
   });
 });

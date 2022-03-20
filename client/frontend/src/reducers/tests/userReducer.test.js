@@ -14,12 +14,26 @@ import {
   USER_UPDATE_PROFILE_SUCCESS,
   USER_UPDATE_PROFILE_FAIL,
   USER_UPDATE_PROFILE_RESET,
+  USER_LIST_REQUEST,
+  USER_LIST_SUCCESS,
+  USER_LIST_FAIL,
+  USER_LIST_RESET,
+  USER_DELETE_REQUEST,
+  USER_DELETE_SUCCESS,
+  USER_DELETE_FAIL,
+  ADMIN_USER_UPDATE_REQUEST,
+  ADMIN_USER_UPDATE_SUCCESS,
+  ADMIN_USER_UPDATE_FAIL,
+  ADMIN_USER_UPDATE_RESET,
 } from "../../constants/userConstants";
 import {
   userLoginReducer,
   userRegisterReducer,
   userDetailsReducer,
   userUpdateProfileReducer,
+  userListReducer,
+  userDeleteReducer,
+  adminUserUpdateReducer,
 } from "../userReducers";
 import userInfo from "../../mockData/user";
 
@@ -237,5 +251,123 @@ describe("userLoginReducer test", () => {
         type: USER_LOGOUT,
       })
     ).toEqual({});
+  });
+});
+
+describe("userListReducer test", () => {
+  it("should return loading as true", () => {
+    expect(
+      userListReducer(undefined, {
+        type: USER_LIST_REQUEST,
+      })
+    ).toEqual({
+      loading: true,
+    });
+  });
+
+  it("should return state with users", () => {
+    expect(
+      userListReducer(undefined, {
+        type: USER_LIST_SUCCESS,
+        payload: [{ user: "user1" }, { user: "user2" }],
+      })
+    ).toEqual({
+      loading: false,
+      users: [{ user: "user1" }, { user: "user2" }],
+    });
+  });
+
+  it("should fail to get users list", () => {
+    expect(
+      userListReducer(undefined, {
+        type: USER_LIST_FAIL,
+        payload: "Not authorized",
+      })
+    ).toEqual({
+      loading: false,
+      error: "Not authorized",
+    });
+  });
+
+  it("should reset user list", () => {
+    expect(
+      userListReducer(undefined, {
+        type: USER_LIST_RESET,
+      })
+    ).toEqual({ users: [] });
+  });
+});
+
+describe("userDeleteReducer test", () => {
+  it("should request to delete user", () => {
+    expect(
+      userDeleteReducer(undefined, {
+        type: USER_DELETE_REQUEST,
+      })
+    ).toEqual({
+      loading: true,
+    });
+  });
+
+  it("should return id of user deleted", () => {
+    expect(
+      userDeleteReducer(undefined, {
+        type: USER_DELETE_SUCCESS,
+        payload: 1,
+      })
+    ).toEqual({
+      loading: false,
+      success: true,
+    });
+  });
+
+  it("should fail to delete user", () => {
+    expect(
+      userDeleteReducer(undefined, {
+        type: USER_DELETE_FAIL,
+        payload: "Not authorized",
+      })
+    ).toEqual({ error: "Not authorized", loading: false });
+  });
+});
+
+describe("adminUserUpdateReducer test", () => {
+  it("should request to update user", () => {
+    expect(
+      adminUserUpdateReducer(undefined, {
+        type: ADMIN_USER_UPDATE_REQUEST,
+      })
+    ).toEqual({
+      loading: true,
+    });
+  });
+
+  it("should update user state", () => {
+    expect(
+      adminUserUpdateReducer(undefined, {
+        type: ADMIN_USER_UPDATE_SUCCESS,
+        payload: userInfo,
+      })
+    ).toEqual({
+      loading: false,
+      success: true,
+    });
+  });
+
+  it("should fail to update user", () => {
+    expect(
+      adminUserUpdateReducer(undefined, {
+        type: ADMIN_USER_UPDATE_FAIL,
+        payload: "Not authorized",
+      })
+    ).toEqual({ error: "Not authorized", loading: false });
+  });
+
+  it("should reset update user state", () => {
+    expect(
+      adminUserUpdateReducer(undefined, {
+        type: ADMIN_USER_UPDATE_RESET,
+      })
+    ).toEqual({ user: {} });
   });
 });

@@ -12,6 +12,9 @@ Some stuff I have in mind for now:
 - redoing the file organization of the backend(doing it as I write the backend)
 - rewriting the frontend in typescript(this is low on priority)
 - Docker and Docker Compose
+- refactoring??
+
+Also to limit my scope, I will do the bare minimum for frontend and focus most of my efforts on the backend + stuff not directly involved with development like testing and dev-ops. I enjoy backend stuff a lot more and React makes frontend bareable.
 
 As I was doing the project I found some problems in the frontend which I fixed and I got some ideas for new features after observing my own workplace's ecommerce webapp features.
 
@@ -30,4 +33,5 @@ Extra features I'm thinking of:
   - admin add discounts directly
   - user uses discount codes if given
 - product mass upload, edit, download feature(admin)
-- upgrading to React Router 6
+- add more categories of products
+- upgrading to React Router 6(should I? low prio)
