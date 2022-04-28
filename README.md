@@ -1,3 +1,9 @@
+# I GOT A BACKEND DEVELOPER JOB
+
+I don't think I can finish this considering that I'll be busy learning all sorts of stuff that's more relevant.
+
+It was a good experience tho and I recommend this course if you're willing to put in more effort than the videos require.
+
 # Ecommerce project
 
 I'm currently working in a ecommerce company so I thought it would be fitting to make an ecommerce website.

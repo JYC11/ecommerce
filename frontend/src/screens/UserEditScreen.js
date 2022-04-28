@@ -8,7 +8,7 @@ import FormContainer from "../components/FormContainer";
 import { adminGetUserDetails, adminUpdateUser } from "../actions/userActions";
 import { ADMIN_USER_UPDATE_RESET } from "../constants/userConstants";
 
-function UserEditScreen({ match, history }) {
+const UserEditScreen = ({ match, history }) => {
   const userId = match.params.id;
 
   const [name, setName] = useState("");
@@ -99,6 +99,6 @@ function UserEditScreen({ match, history }) {
       </FormContainer>
     </div>
   );
-}
+};
 
 export default UserEditScreen;
